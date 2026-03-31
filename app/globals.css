@@ -103,3 +103,47 @@
   pointer-events: none;
   z-index: 1;
 }
+
+/* Pastikan aspect-square didukung browser atau buat manual */
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
+/* Tambahan agar iframe terlihat lebih elegan di dalam kotak */
+iframe {
+  filter: contrast(105%) saturate(110%);
+  border-radius: 20px; /* Opsional: sedikit melengkung di dalam */
+}
+
+/* Memastikan konten di sekitarnya tidak 'terdorong' ke bawah layar HP */
+.snap-section {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.grid img {
+  transition: transform 0.3s ease-in-out;
+  backface-visibility: hidden;
+}
+
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
+@media (max-height: 600px) {
+  .max-w-\[300px\] {
+    max-width: 240px;
+  }
+}
+
+/* Garis pemisah ornamen di bagian penutup */
+.border-\[#c5a059\]\/30 {
+  border-color: rgba(197, 160, 89, 0.3);
+}
+
+/* Memastikan konten penutup tidak menabrak tombol musik */
+@media (max-height: 700px) {
+  .snap-section {
+    padding-bottom: 60px; /* Memberikan ruang ekstra di bawah untuk layar pendek */
+  }
+}
