@@ -1,38 +1,105 @@
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=Playfair+Display:ital,wght@0,400;1,400&family=Lateef&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;700&display=swap");
 @import "tailwindcss";
 
 @theme {
   --font-serif: "Playfair Display", serif;
-  --font-sans: "Quicksand", sans-serif; /* Font bulat yang friendly */
-  --font-arabic: "Lateef", serif;
+  --font-sans: "Montserrat", sans-serif;
 }
 
 :root {
-  --sage-green: #94a38e;
-  --soft-beige: #f4f1ea;
-  --warm-white: #faf9f6;
-  --text-main: #555d50;
+  --royal-blue: #1a365d;
+  --gold: #c5a059;
 }
 
-body {
-  background-color: var(--warm-white);
-  color: var(--text-main);
-  font-family: "Quicksand", sans-serif; /* Menggunakan font yang lebih ramah */
+/* 1. Snap Scroll Portrait (Khusus ukuran Ponsel) */
+.snap-container {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
 }
 
-/* Hiasan dedaunan halus untuk nuansa soft */
-.leaf-pattern {
-  background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
-  opacity: 0.5;
+.snap-container::-webkit-scrollbar {
+  display: none; /* Safari & Chrome */
 }
 
-h1,
-h2,
-h3,
-.font-serif {
-  font-family: "Playfair Display", serif !important;
-  font-weight: 400;
+.snap-section {
+  height: 100vh;
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden;
+  background-color: #fdfcf9;
+}
+
+/* 2. Animasi Berputar Umum */
+@keyframes spin-ornament {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 3. Layer Dekorasi Statis (Gambar top-corner.png di belakang) */
+.decor-static-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.95;
+}
+
+/* 4. Layer Ornamen Berputar 4 Penjuru (Layer Paling Depan) */
+.ornament-container-top,
+.ornament-container-bottom {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.ornament-container-top {
+  top: -45px;
+}
+.ornament-container-bottom {
+  bottom: -45px;
+}
+
+.spinning-ornament {
+  width: 110px;
+  height: 110px;
+  animation: spin-ornament 20s linear infinite;
+  opacity: 0.7;
+  filter: drop-shadow(0 0 10px rgba(197, 160, 89, 0.2));
+}
+
+/* Offset agar ornamen memotong pojok layar portrait dengan pas */
+.offset-left {
+  margin-left: -50px;
+}
+.offset-right {
+  margin-right: -50px;
+}
+
+/* 5. Dekorasi Arch (Lengkungan) pada Foto Profil */
+.arch-frame {
+  border-radius: 500px 500px 0 0;
+  border-bottom: none;
+}
+
+/* 6. Background Pattern Islami (Layer Paling Belakang) */
+.islamic-bg {
+  background-image: url("https://www.transparenttextures.com/patterns/islamic-art.png");
+  opacity: 0.04;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
 }
