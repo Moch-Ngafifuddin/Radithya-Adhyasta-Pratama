@@ -398,6 +398,46 @@ function InvitationContent() {
             </motion.div>
           </section>
 
+          {/* SECTION: DOA & HARAPAN (NEW) */}
+          <section className="snap-section flex flex-col items-center justify-center px-10 text-center relative overflow-hidden">
+            <FullDecorations />
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              className="z-30 relative w-full flex flex-col items-center"
+            >
+              {/* Ornamen Pembuka Doa */}
+              <motion.div variants={itemVariants} className="mb-6 opacity-60">
+                <span className="text-2xl text-[#c5a059]">✨</span>
+              </motion.div>
+
+              <motion.div
+                variants={itemVariants}
+                className="bg-white/40 backdrop-blur-sm p-6 rounded-[2.5rem] border-x border-[#c5a059]/20 relative"
+              >
+                <motion.p
+                  className="font-serif italic text-[#1a365d] text-[13px] leading-loose tracking-wide"
+                  variants={itemVariants}
+                >
+                  "Ya Allah, muliakanlah putra kami ini, panjangkanlah umurnya,
+                  terangilah hatinya, teguhkanlah imannya, perbaikilah amal
+                  perbuatannya, dan lapangkanlah rezekinya. Jadikanlah ia anak
+                  yang sholeh dan berbakti kepada kedua orang tua, agama, serta
+                  bangsa."
+                </motion.p>
+              </motion.div>
+
+              {/* Amin / Penutup Doa */}
+              <motion.p
+                variants={itemVariants}
+                className="mt-6 font-serif text-[#c5a059] font-bold tracking-[0.3em] text-[10px] uppercase"
+              >
+                — Aamiin Ya Rabbal Alamin —
+              </motion.p>
+            </motion.div>
+          </section>
+
           {/* SECTION 5: GIFT */}
           <section className="snap-section flex flex-col items-center justify-center px-8 text-center">
             <FullDecorations />
@@ -407,28 +447,47 @@ function InvitationContent() {
               whileInView="visible"
               className="z-30 relative"
             >
+              <motion.h4
+                variants={itemVariants}
+                className="font-serif text-[#c5a059] text-xl font-bold mb-4 uppercase tracking-widest"
+              >
+                Tanda Kasih
+              </motion.h4>
+
               <motion.p
                 variants={itemVariants}
-                className="font-serif italic text-[#c5a059] text-lg mb-6 leading-tight px-4 text-center text-[#c5a059]"
+                className="font-serif italic text-stone-500 text-[13px] mb-8 leading-relaxed px-6"
               >
-                Kirim Hadiah Digital
+                Tanpa mengurangi rasa hormat, bagi Bapak/Ibu/Saudara/i yang
+                ingin memberikan tanda kasih untuk ananda, dapat melalui:
               </motion.p>
+
               <motion.div
                 variants={itemVariants}
-                className="bg-white p-6 rounded-3xl shadow-sm border border-stone-100 flex flex-col items-center max-w-[280px] mx-auto"
+                className="bg-white/80 backdrop-blur-md p-6 rounded-[2.5rem] shadow-sm border border-[#c5a059]/20 flex flex-col items-center max-w-[280px] mx-auto relative"
               >
-                <p className="text-[#1a365d] font-bold text-lg mb-4 tracking-tighter">
+                {/* Aksen Ikon Bank */}
+                <div className="text-xl mb-2">💳</div>
+
+                <p className="text-[#1a365d] font-bold text-xl mb-4 tracking-wider">
                   {data.rekening}
                 </p>
+
                 <button
                   onClick={() => handleCopy(data.rekening)}
-                  className="bg-[#c5a059] text-white px-8 py-2 rounded-full text-[10px] font-bold uppercase shadow-md active:scale-95 transition-transform"
+                  className="bg-[#c5a059] text-white px-8 py-2.5 rounded-full text-[10px] font-bold uppercase shadow-lg active:scale-95 transition-transform tracking-widest"
                 >
-                  Salin Rekening
+                  Salin Nomor Rekening
                 </button>
-                <p className="text-[10px] text-stone-400 mt-3 uppercase font-bold tracking-widest text-center">
-                  BNI : Nanik Sugiarti
-                </p>
+
+                <div className="mt-4 border-t border-stone-100 w-full pt-3">
+                  <p className="text-[11px] text-[#1a365d] uppercase font-bold tracking-widest">
+                    Bank BNI
+                  </p>
+                  <p className="text-[10px] text-stone-400 font-medium">
+                    a.n Nanik Sugiarti
+                  </p>
+                </div>
               </motion.div>
             </motion.div>
           </section>
@@ -452,14 +511,16 @@ function InvitationContent() {
                 variants={itemVariants}
                 className="text-[11px] text-stone-500 mb-6 px-4 leading-relaxed text-center"
               >
-                Kebahagiaan bagi kami apabila Bapak/Ibu berkenan hadir
-                memberikan doa restu.
+                Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila
+                Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu
+                kepada putra kami. Atas kehadiran dan doa restunya, kami ucapkan
+                terima kasih.
               </motion.p>
               <motion.h4
                 variants={itemVariants}
                 className="font-serif text-[#c5a059] text-xl font-bold mb-6 tracking-widest uppercase text-center"
               >
-                Terima Kasih
+                {/* Terima Kasih */}
               </motion.h4>
               <motion.div
                 variants={itemVariants}

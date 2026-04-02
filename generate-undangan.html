@@ -2,7 +2,7 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <title>Sistem Antrian Undangan Rashad</title>
+    <title>Sistem Antrian Undangan Radithya</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -15,54 +15,54 @@
   </head>
   <body class="bg-slate-100 p-6 md:p-12 font-sans">
     <div class="max-w-4xl mx-auto bg-white p-8 rounded-3xl shadow-2xl">
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold text-slate-800">
+      <div class="mb-8 border-b pb-6">
+        <h1 class="text-3xl font-bold text-[#1a365d]">
           Undangan Blast Helper ⚡
         </h1>
-        <p class="text-slate-500">
-          Kirim 100+ undangan dengan alur yang cepat dan aman.
+        <p class="text-slate-500 mt-2">
+          Format pesan formal untuk Tasyakuran Khitan Radithya.
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div class="space-y-2">
-          <label class="font-bold text-sm">Link Vercel:</label>
+          <label class="font-bold text-sm text-slate-700">Link Vercel:</label>
           <input
             id="baseUrl"
             type="text"
-            value="https://khitanan-chi.vercel.app"
-            class="w-full p-3 border rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+            value="https://radithya-adhyasta-pratama.vercel.app"
+            class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
         <div class="space-y-2">
-          <label class="font-bold text-sm"
-            >File Excel (Kolom A: Nama, B: No WA):</label
+          <label class="font-bold text-sm text-slate-700"
+            >File Excel (A: Nama, B: No WA):</label
           >
           <input
             type="file"
             id="excelFile"
             accept=".xlsx"
-            class="w-full p-2 text-sm border rounded-xl"
+            class="w-full p-2 text-sm border border-slate-200 rounded-xl bg-slate-50"
           />
         </div>
       </div>
 
       <button
         onclick="processExcel()"
-        class="w-full bg-[#1a365d] text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-900 transition mb-10"
+        class="w-full bg-[#1a365d] text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-900 transition active:scale-[0.98] mb-10"
       >
-        Tampilkan Daftar Antrian
+        Tampilkan Daftar Antrian 🚀
       </button>
 
       <div id="resultArea" class="hidden">
         <div
-          class="flex justify-between items-center mb-4 bg-blue-50 p-4 rounded-xl text-blue-800"
+          class="flex justify-between items-center mb-6 bg-blue-50 p-4 rounded-xl border border-blue-100 text-blue-800"
         >
-          <p class="text-sm font-medium">
-            Total: <span id="totalCount">0</span> tamu
+          <p class="text-sm font-semibold">
+            Total: <span id="totalCount">0</span> Tamu
           </p>
-          <p class="text-xs italic">
-            Klik tombol hijau, tekan ENTER di WA Web, lalu tutup tab.
+          <p class="text-[10px] italic">
+            Klik KIRIM > Tekan ENTER di WA > Tutup Tab
           </p>
         </div>
         <div
@@ -78,7 +78,8 @@
         const baseUrl = document.getElementById("baseUrl").value;
         const container = document.getElementById("linkContainer");
 
-        if (!fileInput.files[0]) return alert("Silakan pilih file Excel!");
+        if (!fileInput.files[0])
+          return alert("Silakan pilih file Excel terlebih dahulu!");
 
         const reader = new FileReader();
         reader.onload = function (e) {
@@ -94,30 +95,55 @@
             const name = row[0];
             let phone = row[1] ? row[1].toString().replace(/[^0-9]/g, "") : "";
 
-            if (!name || name === "Nama") return;
+            if (!name || name === "Nama" || name === "Nama Tamu") return;
             count++;
 
+            // Format nomor WA ke 62
             if (phone.startsWith("0")) phone = "62" + phone.substring(1);
             if (phone.startsWith("8")) phone = "62" + phone;
 
-            const encodedName = encodeURIComponent(name);
-            const finalUrl = `${baseUrl}?to=${encodedName}`;
-            const msg = encodeURIComponent(
-              `Assalamu'alaikum Wr. Wb.\n\nYth. *${name}*\n\nKami mengundang Anda dalam acara Tasyakuran Khitan putra kami:\n*RASHAD HAKEEM DARMAWAN*\n\nInfo & Lokasi:\n${finalUrl}\n\nTerima kasih.`,
-            );
+            // Buat link bersih (spasi jadi +)
+            const cleanNameForLink = name.trim().replace(/\s+/g, "+");
+            const finalUrl = `${baseUrl}?to=${cleanNameForLink}`;
 
-            const waLink = `https://wa.me/${phone}?text=${msg}`;
+            // --- FORMAT PESAN WHATSAPP ---
+            const messageText = `Kepada Yth.
+Bapak/Ibu/Saudara/i
+
+*${name}*
+
+Assalamu'alaikum Warahmatullahi Wabarakatuh
+
+Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i
+Untuk hadir di acara Tasyakuran Khitan Putra kami :
+
+*RADITHYA ADHYASTA PRATAMA*
+
+Detail acara dapat dilihat pada link berikut : 
+
+${finalUrl}
+
+Merupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.
+
+Wassalamu'alaikum Warahmatullahi Wabarakatuh
+
+Terima Kasih
+
+Hormat Kami
+*Rokhmat Priyoko & Nanik Sugiarti*`;
+
+            const waLink = `https://wa.me/${phone}?text=${encodeURIComponent(messageText)}`;
 
             const item = document.createElement("div");
             item.className =
-              "flex items-center justify-between p-4 bg-white border border-slate-200 rounded-2xl shadow-sm transition-all";
+              "flex items-center justify-between p-4 bg-white border border-slate-200 rounded-2xl shadow-sm hover:border-blue-300 transition-all";
             item.innerHTML = `
-                        <div>
-                            <p class="font-bold text-slate-800">${name}</p>
-                            <p class="text-xs text-slate-400">${phone}</p>
+                        <div class="overflow-hidden">
+                            <p class="font-bold text-slate-800 truncate">${name}</p>
+                            <p class="text-[10px] text-slate-400 font-mono">${phone}</p>
                         </div>
                         <a href="${waLink}" target="_blank" onclick="markAsSent(this)" 
-                           class="bg-green-500 hover:bg-green-600 text-white text-xs px-6 py-2.5 rounded-xl font-bold shadow-md">
+                           class="bg-green-500 hover:bg-green-600 text-white text-xs px-6 py-2.5 rounded-xl font-bold shadow-md shrink-0 ml-4">
                             KIRIM
                         </a>
                     `;
@@ -134,7 +160,7 @@
         el.parentElement.classList.add("sent");
         el.innerText = "TERKIRIM ✓";
         el.className =
-          "bg-slate-300 text-slate-600 text-xs px-6 py-2.5 rounded-xl font-bold cursor-default";
+          "bg-slate-300 text-slate-500 text-xs px-6 py-2.5 rounded-xl font-bold cursor-default shadow-none";
       }
     </script>
   </body>
