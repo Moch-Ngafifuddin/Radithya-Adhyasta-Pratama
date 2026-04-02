@@ -3,57 +3,56 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// --- Komponen Dekorasi Simetris 4 Sudut ---
+// --- Komponen Dekorasi Multi-Layer ---
 const FullDecorations = () => (
   <>
-    {/* LAYER BELAKANG: Dekorasi Statis (Gambar top-corner.png) */}
-    <img
+    <div className="islamic-bg" />
+    <motion.img
+      initial={{ opacity: 0, y: -20 }}
+      whileInView={{ opacity: 0.9, y: 0 }}
       src="/top-corner.png"
       className="decor-static-top pointer-events-none"
-      alt="Static Decor Back"
+      alt="Frame"
     />
-    {/* Ornamen Pojok ATAS (Kiri & Kanan) */}
     <div className="ornament-container-top pointer-events-none">
       <img
         src="/bottom-corner.png"
-        className="spinning-ornament offset-left"
-        alt="Top Left"
+        className="spinning-ornament spin-cw offset-left"
+        alt="TL"
       />
       <img
         src="/bottom-corner.png"
-        className="spinning-ornament offset-right"
-        alt="Top Right"
+        className="spinning-ornament spin-cw offset-right"
+        alt="TR"
       />
     </div>
-
-    {/* Ornamen Pojok BAWAH (Kiri & Kanan) */}
     <div className="ornament-container-bottom pointer-events-none">
       <img
         src="/bottom-corner.png"
-        className="spinning-ornament offset-left"
-        alt="Bottom Left"
+        className="spinning-ornament spin-ccw offset-left"
+        alt="BL"
       />
       <img
         src="/bottom-corner.png"
-        className="spinning-ornament offset-right"
-        alt="Bottom Right"
+        className="spinning-ornament spin-ccw offset-right"
+        alt="BR"
       />
     </div>
   </>
 );
 
-// --- Varian Animasi Staggered untuk Konten ---
+// --- Animasi Variants ---
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.3, delayChildren: 0.2 },
+    transition: { staggerChildren: 0.2, delayChildren: 0.1 },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 25 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
 // --- Komponen Countdown Timer ---
@@ -86,15 +85,15 @@ const CountdownTimer = ({ targetDate }) => {
   return (
     <motion.div
       variants={itemVariants}
-      className="flex gap-2 justify-center z-30 relative mt-4"
+      className="flex gap-2 justify-center z-30 relative mt-4 scale-90"
     >
       {Object.entries(timeLeft).map(([label, value]) => (
         <div
           key={label}
-          className="bg-[#c5a059] text-white p-2 rounded-lg min-w-[65px] text-center shadow-md"
+          className="bg-[#c5a059] text-white p-2 rounded-xl min-w-[60px] text-center shadow-md border border-white/20"
         >
-          <div className="text-xl font-bold font-serif">{value}</div>
-          <div className="text-[10px] uppercase tracking-widest">{label}</div>
+          <div className="text-lg font-bold font-serif">{value}</div>
+          <div className="text-[9px] uppercase tracking-tighter">{label}</div>
         </div>
       ))}
     </motion.div>
@@ -103,43 +102,39 @@ const CountdownTimer = ({ targetDate }) => {
 
 function InvitationContent() {
   const searchParams = useSearchParams();
-  const guestName = searchParams.get("to") || "Nama Tamu";
+  const rawName = searchParams.get("to") || "Nama Tamu";
+  const guestName = rawName.replace(/[+-]/g, " ");
+
   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
-  const koordinat = "-7.445232, 109.262780";
-  const mapsUrl = `https://www.google.com/maps?q=${koordinat}`;
-  const iframeSrc = `https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3950.000000000000!2d${koordinat.split(", ")[1]}!3d${koordinat.split(", ")[0]}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid`;
-
-  const albumPhotos = [
-    "/foto1.avif",
-    "/foto2.avif",
-    "/foto3.avif",
-    "/foto4.avif",
-  ];
-
-  const handleCopy = (text) => {
-    if (navigator.clipboard) {
-      navigator.clipboard
-        .writeText(text)
-        .then(() => alert("Nomor rekening berhasil disalin!"));
-    }
-  };
 
   const data = {
-    childName: "Rashad Hakeem Darmawan",
-    parents: "Putra Bapak Fulan & Ibu Nanik Sugiarti",
+    childName: "Radithya Adhyasta Pratama",
+    parents: "Putra Bapak Rokhmat Priyoko & Ibu Nanik Sugiarti",
     targetDate: "2026-04-20T10:00:00",
-    displayDate: "Senin, 20 April 2026",
-    time: "09.00 - 16.00 ",
-    location: "Komplek Perumahan INALUM, Sei Suka, Batu Bara",
-    wa: "628123456789",
-
+    location: "Desa Tambaksari Kidul, RT 03 RW 03, Kec.Kembaran, Kab.Banyumas",
+    rekening: "0625817659",
+    wa: "6283120772552",
     turutMengundang: [
-      "Keluarga Besar Bpk. Fulan",
-      "Keluarga Besar Ibu Fulanah",
-      "Seluruh Kerabat & Sahabat",
+      "Keluarga Karpan Hadi Muhyanto ( Alm ) & Mukinah",
+      "Keluarga Masngud & Suci Winarni",
     ],
+  };
+
+  // Koordinat Presisi: Tambaksari Kidul, Kembaran, Banyumas
+  const lat = "-7.3926183";
+  const lng = "109.266245";
+
+  // URL Tombol: Menggunakan format ?q= agar memunculkan PIN MERAH di titik koordinat
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+
+  // URL Iframe: Menggunakan format Embed murni berbasis koordinat
+  const iframeSrc = `https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3956.123!2d${lng}!3d${lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zN8KwMjUnNDMuNyJTIDEwOcKwMTYnMzkuOCJF!5e0!3m2!1sid!2sid!4v1711500000000!5m2!1sid!2sid`;
+  const handleCopy = (text) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => alert("Nomor rekening berhasil disalin!"));
   };
 
   const handleOpen = () => {
@@ -149,15 +144,14 @@ function InvitationContent() {
   };
 
   return (
-    <main className="max-w-md mx-auto shadow-2xl relative bg-[#fdfcf9]">
+    <main className="max-w-md mx-auto shadow-2xl relative bg-[#fdfcf9] overflow-hidden">
       <audio ref={audioRef} src="/music.mp3" loop />
 
-      {/* --- COVER PAGE --- */}
       <AnimatePresence>
         {!isOpen && (
           <motion.section
-            exit={{ y: "-100%", opacity: 0 }}
-            transition={{ duration: 1.2, ease: [0.77, 0, 0.175, 1] }}
+            exit={{ y: "-100%" }}
+            transition={{ duration: 1, ease: [0.7, 0, 0.3, 1] }}
             className="fixed inset-0 z-[500] bg-[#fdfcf9] flex flex-col items-center justify-center text-center p-8 overflow-hidden"
           >
             <FullDecorations />
@@ -165,48 +159,45 @@ function InvitationContent() {
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="z-30 relative"
+              className="z-30"
             >
               <motion.p
                 variants={itemVariants}
-                className="font-serif italic text-[#c5a059] text-xl mb-2"
+                className="font-serif italic text-[#c5a059] text-lg mb-2"
               >
                 Undangan
               </motion.p>
               <motion.h1
                 variants={itemVariants}
-                className="font-serif text-3xl text-[#c5a059] font-bold tracking-[0.2em] mb-12 uppercase leading-tight"
+                className="font-serif text-2xl text-[#c5a059] font-bold tracking-[0.2em] mb-8 uppercase"
               >
                 Tasyakuran Khitan
               </motion.h1>
               <motion.div
                 variants={itemVariants}
-                className="w-56 h-56 rounded-full border-4 border-[#c5a059] overflow-hidden mx-auto mb-10 shadow-xl"
+                className="w-48 h-48 rounded-full border-4 border-[#c5a059] overflow-hidden mx-auto mb-8 shadow-xl"
               >
                 <img
-                  src="/hero.avif"
+                  src="/hero.png"
                   className="w-full h-full object-cover"
                   alt="Hero"
                 />
               </motion.div>
               <motion.h2
                 variants={itemVariants}
-                className="text-3xl font-serif text-[#1a365d] font-bold mb-8 leading-tight"
+                className="text-2xl font-serif text-[#1a365d] font-bold mb-6 px-4 leading-tight"
               >
                 {data.childName}
               </motion.h2>
-              <motion.div
-                variants={itemVariants}
-                className="mb-10 text-stone-500"
-              >
-                <p className="text-sm italic mb-2">Kepada Yth;</p>
-                <p className="text-2xl font-serif text-[#c5a059] font-bold">
+              <div className="mb-8 text-stone-500">
+                <p className="text-xs italic mb-1 text-center">Kepada Yth;</p>
+                <p className="text-xl font-serif text-[#c5a059] font-bold text-center">
                   {guestName}
                 </p>
-              </motion.div>
+              </div>
               <motion.button
                 variants={itemVariants}
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={handleOpen}
                 className="bg-[#1a365d] text-white px-10 py-3 rounded-full text-xs uppercase tracking-widest font-bold shadow-lg"
               >
@@ -217,11 +208,10 @@ function InvitationContent() {
         )}
       </AnimatePresence>
 
-      {/* --- CONTENT (SNAP SCROLL) --- */}
       {isOpen && (
         <div className="snap-container">
           {/* SECTION 1: PROFIL */}
-          <div className="snap-section flex flex-col items-center justify-center text-center px-8">
+          <section className="snap-section flex flex-col items-center justify-center px-8 text-center">
             <FullDecorations />
             <motion.div
               variants={containerVariants}
@@ -231,87 +221,121 @@ function InvitationContent() {
             >
               <motion.p
                 variants={itemVariants}
-                className="font-serif italic text-stone-600 mb-2"
+                className="font-serif italic text-stone-600 mb-2 uppercase text-xs text-center"
               >
                 Assalamu'alaikum Wr Wb
               </motion.p>
               <motion.p
                 variants={itemVariants}
-                className="text-[13px] leading-relaxed text-stone-500 mb-8 px-4"
+                className="text-[12px] text-stone-500 mb-6 px-4 leading-relaxed text-center"
               >
                 Tanpa mengurangi rasa hormat kami bermaksud mengundang
                 Bapak/Ibu/Saudara/i pada acara syukuran khitan anak kami:
               </motion.p>
               <motion.div
                 variants={itemVariants}
-                className="w-48 h-56 arch-frame overflow-hidden border-2 border-[#c5a059] mb-6 shadow-lg mx-auto"
+                className="w-40 h-48 arch-frame overflow-hidden border-2 border-[#c5a059] mx-auto mb-4 shadow-lg"
               >
-                <img src="/hero.avif" className="w-full h-full object-cover" />
+                <img
+                  src="/hero.png"
+                  className="w-full h-full object-cover"
+                  alt="Anak"
+                />
               </motion.div>
               <motion.h3
                 variants={itemVariants}
-                className="text-2xl font-serif text-[#c5a059] font-bold mb-2 leading-tight"
+                className="text-xl font-serif text-[#c5a059] font-bold mb-1"
               >
                 {data.childName}
               </motion.h3>
               <motion.p
                 variants={itemVariants}
-                className="text-sm font-serif italic text-[#1a365d] font-bold"
+                className="text-[11px] font-serif italic text-[#1a365d] font-bold"
               >
                 {data.parents}
               </motion.p>
             </motion.div>
-          </div>
+          </section>
 
           {/* SECTION 2: EVENT */}
-          <div className="snap-section flex flex-col items-center justify-center text-center px-8">
+          <section className="snap-section flex flex-col items-center justify-center px-6 text-center">
             <FullDecorations />
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              className="z-10 relative"
+              className="z-30 relative w-full flex flex-col items-center"
             >
               <motion.h1
                 variants={itemVariants}
-                className="font-serif text-3xl text-[#c5a059] font-bold tracking-[0.1em] mb-4 uppercase leading-tight"
+                className="font-serif text-xl text-[#c5a059] font-bold tracking-[0.15em] mb-5 uppercase text-center"
               >
                 Waktu Pelaksanaan
               </motion.h1>
               <motion.div
                 variants={itemVariants}
-                className="space-y-2 text-[#1a365d] font-bold mb-10 mt-6"
+                className="bg-white/80 backdrop-blur-md py-6 px-7 rounded-[2rem] border border-[#c5a059]/30 shadow-sm w-full max-w-[280px] relative overflow-hidden"
               >
-                <p className="text-xl font-serif">{data.displayDate}</p>
-                <p className="text-sm">{data.time}</p>
-                <p className="text-xs leading-relaxed max-w-[250px] mx-auto font-normal text-stone-400 italic">
-                  {data.location}
-                </p>
+                <div className="absolute inset-2 border border-[#c5a059]/10 rounded-[1.6rem] pointer-events-none"></div>
+                <div className="relative z-10 space-y-3">
+                  <div className="flex flex-col items-center">
+                    <span className="text-[9px] uppercase tracking-[0.2em] text-[#c5a059] font-bold mb-0.5">
+                      Hari
+                    </span>
+                    <span className="text-base font-serif font-bold text-[#1a365d]">
+                      Senin & Selasa
+                    </span>
+                  </div>
+                  <div className="w-10 h-[0.5px] bg-[#c5a059]/20 mx-auto"></div>
+                  <div className="flex flex-col items-center">
+                    <span className="text-[9px] uppercase tracking-[0.2em] text-[#c5a059] font-bold mb-0.5">
+                      Tanggal
+                    </span>
+                    <span className="text-base font-serif font-bold text-[#1a365d]">
+                      20 & 21 April 2026
+                    </span>
+                  </div>
+                  <div className="w-10 h-[0.5px] bg-[#c5a059]/20 mx-auto"></div>
+                  <div className="flex flex-col items-center">
+                    <span className="text-[9px] uppercase tracking-[0.2em] text-[#c5a059] font-bold mb-0.5">
+                      Waktu
+                    </span>
+                    <span className="text-base font-serif font-bold text-[#1a365d]">
+                      08.00 - Selesai
+                    </span>
+                  </div>
+                </div>
               </motion.div>
-              <CountdownTimer targetDate={data.targetDate} />
+              <motion.p
+                variants={itemVariants}
+                className="text-[9px] text-stone-400 italic mt-4 mb-2 px-6 leading-tight max-w-[240px] text-center"
+              >
+                📍 {data.location}
+              </motion.p>
+              <div className="transform scale-[0.85] origin-top">
+                <CountdownTimer targetDate={data.targetDate} />
+              </div>
             </motion.div>
-          </div>
-          {/* SECTION 4: LOKASI & GOOGLE MAPS */}
-          <div className="snap-section flex flex-col items-center justify-center text-center px-6 relative overflow-hidden">
-            <FullDecorations />
+          </section>
 
+          {/* SECTION 3: MAPS */}
+          <section className="snap-section flex flex-col items-center justify-center px-8 text-center">
+            <FullDecorations />
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              className="z-30 relative w-full flex flex-col items-center justify-center"
+              className="z-30 relative w-full flex flex-col items-center"
             >
               <motion.h3
                 variants={itemVariants}
-                className="font-serif text-[#c5a059] text-2xl font-bold mb-4 uppercase tracking-widest"
+                className="font-serif text-[#c5a059] text-xl font-bold mb-4 uppercase tracking-widest"
               >
                 Lokasi Acara
               </motion.h3>
-
-              {/* Frame Peta Interaktif */}
               <motion.div
                 variants={itemVariants}
-                className="w-4/5 aspect-square max-w-[280px] rounded-3xl overflow-hidden border-4 border-white shadow-xl mb-6 bg-stone-100 relative mx-auto"
+                className="w-full aspect-square max-w-[250px] rounded-3xl overflow-hidden border-4 border-white shadow-xl mb-6 mx-auto relative"
               >
                 <iframe
                   src={iframeSrc}
@@ -324,204 +348,166 @@ function InvitationContent() {
                   className="absolute inset-0"
                 ></iframe>
               </motion.div>
-
-              {/* Detail Alamat Pendek */}
-              <motion.p
-                variants={itemVariants}
-                className="text-[12px] text-stone-500 mb-6 italic leading-relaxed px-4"
-              >
-                {data.location}
-              </motion.p>
-
-              {/* Tombol Navigasi */}
               <motion.a
                 variants={itemVariants}
-                whileTap={{ scale: 0.95 }}
                 href={mapsUrl}
                 target="_blank"
-                rel="noopener noreferrer"
-                className="bg-[#1a365d] text-white px-10 py-3 rounded-full text-xs font-bold shadow-xl inline-block uppercase tracking-widest transition-all hover:bg-[#c5a059]"
+                className="bg-[#1a365d] text-white px-8 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg"
               >
                 Buka Google Maps
               </motion.a>
             </motion.div>
-          </div>
-          {/* SECTION 5: GALLERY FOTO */}
-          <div className="snap-section flex flex-col items-center justify-center text-center px-6 relative overflow-hidden">
-            <FullDecorations />
+          </section>
 
+          {/* SECTION 4: GALLERY */}
+          <section className="snap-section flex flex-col items-center justify-center px-8 text-center">
+            <FullDecorations />
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              className="z-30 relative w-full flex flex-col items-center justify-center"
+              className="z-30 relative w-full"
             >
               <motion.h3
                 variants={itemVariants}
-                className="font-serif text-[#c5a059] text-2xl font-bold mb-6 uppercase tracking-widest"
+                className="font-serif text-[#c5a059] text-xl font-bold mb-6 uppercase tracking-widest text-center"
               >
                 Galeri Foto
               </motion.h3>
-
-              {/* Grid Foto 2x2 */}
-              <motion.div
-                variants={itemVariants}
-                className="grid grid-cols-2 gap-3 w-full max-w-[300px] mx-auto mb-4"
-              >
-                {albumPhotos.map((src, index) => (
+              <div className="grid grid-cols-2 gap-2 w-full max-w-[280px] mx-auto mb-4">
+                {[1, 2, 3, 4].map((i) => (
                   <motion.div
-                    key={index}
-                    whileHover={{ scale: 1.05 }}
-                    className="aspect-square rounded-2xl overflow-hidden border-2 border-white shadow-md bg-stone-200"
+                    key={i}
+                    variants={itemVariants}
+                    className="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md bg-stone-200"
                   >
                     <img
-                      src={src}
+                      src={`/foto${i}.png`}
                       className="w-full h-full object-cover"
-                      alt={`Gallery ${index + 1}`}
+                      alt="Galeri"
                     />
                   </motion.div>
                 ))}
-              </motion.div>
-
+              </div>
               <motion.p
                 variants={itemVariants}
-                className="text-[11px] text-stone-400 italic tracking-wider"
+                className="text-[10px] text-stone-400 italic text-center"
               >
                 "Momen bahagia ananda tersayang"
               </motion.p>
             </motion.div>
-          </div>
-          {/* SECTION 3: GIFT */}
-          <div className="snap-section flex flex-col items-center justify-center text-center px-8">
+          </section>
+
+          {/* SECTION 5: GIFT */}
+          <section className="snap-section flex flex-col items-center justify-center px-8 text-center">
             <FullDecorations />
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              className="z-10 relative"
+              className="z-30 relative"
             >
-              <motion.h4
+              <motion.p
                 variants={itemVariants}
-                className="font-serif italic text-[#c5a059] text-2xl mb-8"
+                className="font-serif italic text-[#c5a059] text-lg mb-6 leading-tight px-4 text-center text-[#c5a059]"
               >
-                Tanda Kasih Terima kasih telah menambah semangat kegembiraan
-                kami dengan kehadiran dan hadiah indah anda
-              </motion.h4>
+                Kirim Hadiah Digital
+              </motion.p>
               <motion.div
                 variants={itemVariants}
-                className="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 flex flex-col items-center"
+                className="bg-white p-6 rounded-3xl shadow-sm border border-stone-100 flex flex-col items-center max-w-[280px] mx-auto"
               >
-                <p className="text-[#1a365d] font-bold text-2xl mb-3 tracking-widest">
-                  3307181890299881
+                <p className="text-[#1a365d] font-bold text-lg mb-4 tracking-tighter">
+                  {data.rekening}
                 </p>
                 <button
-                  onClick={() => handleCopy("3307181890299881")}
-                  className="bg-[#c5a059] text-white px-8 py-2 rounded-full text-[10px] uppercase font-bold shadow-md"
+                  onClick={() => handleCopy(data.rekening)}
+                  className="bg-[#c5a059] text-white px-8 py-2 rounded-full text-[10px] font-bold uppercase shadow-md active:scale-95 transition-transform"
                 >
                   Salin Rekening
                 </button>
-                <p className="text-[11px] text-stone-400 mt-3 uppercase font-bold tracking-widest">
-                  BRI : Nanik Sugiarti
+                <p className="text-[10px] text-stone-400 mt-3 uppercase font-bold tracking-widest text-center">
+                  BNI : Nanik Sugiarti
                 </p>
               </motion.div>
             </motion.div>
-          </div>
-          {/* SECTION 5: GIFT */}
-          {/* SECTION 6: PENUTUP & TURUT MENGUNDANG */}
-          <div className="snap-section flex flex-col items-center justify-center text-center px-8 relative overflow-hidden pt-24">
-            <FullDecorations />
+          </section>
 
+          {/* SECTION 6: CLOSING */}
+          <section className="snap-section flex flex-col items-center justify-center px-8 text-center">
+            <FullDecorations />
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              className="z-30 relative w-full flex flex-col items-center justify-center"
+              className="z-30 relative w-full pt-10"
             >
-              {/* Salam Penutup */}
               <motion.p
                 variants={itemVariants}
-                className="font-serif italic text-stone-600 mb-4 text-sm"
+                className="font-serif italic text-stone-600 mb-3 text-xs uppercase text-center"
               >
                 Wassalamu'alaikum Wr. Wb.
               </motion.p>
-
               <motion.p
                 variants={itemVariants}
-                className="text-[12px] leading-relaxed text-stone-500 mb-8 px-2"
+                className="text-[11px] text-stone-500 mb-6 px-4 leading-relaxed text-center"
               >
-                Merupakan suatu kebahagiaan dan kehormatan bagi kami, apabila
-                Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu
-                kepada putra kami.
+                Kebahagiaan bagi kami apabila Bapak/Ibu berkenan hadir
+                memberikan doa restu.
               </motion.p>
-
               <motion.h4
                 variants={itemVariants}
-                className="font-serif text-[#c5a059] text-xl font-bold mb-6 uppercase tracking-[0.2em]"
+                className="font-serif text-[#c5a059] text-xl font-bold mb-6 tracking-widest uppercase text-center"
               >
                 Terima Kasih
               </motion.h4>
-
-              {/* Turut Mengundang Box */}
               <motion.div
                 variants={itemVariants}
-                className="w-full max-w-[280px] p-4 border-t border-b border-[#c5a059]/30 mt-4 mb-8"
+                className="w-full max-w-[260px] p-4 border-y border-[#c5a059]/30 mx-auto mb-6"
               >
-                <p className="text-[10px] uppercase tracking-widest text-[#c5a059] font-bold mb-3">
+                <p className="text-[9px] uppercase tracking-widest text-[#c5a059] font-bold mb-2 text-center">
                   Turut Mengundang:
                 </p>
                 <div className="space-y-1">
-                  {data.turutMengundang.map((nama, i) => (
+                  {data.turutMengundang.map((n, i) => (
                     <p
                       key={i}
-                      className="text-[11px] text-[#1a365d] font-medium leading-tight"
+                      className="text-[10px] text-[#1a365d] font-medium leading-tight text-center"
                     >
-                      {nama}
+                      {n}
                     </p>
                   ))}
                 </div>
               </motion.div>
-
-              {/* Logo/Inisial Penutup (Opsional) */}
-              <motion.div variants={itemVariants} className="opacity-40">
-                <p className="font-serif text-2xl text-[#c5a059]">R & H</p>
-                <p className="text-[9px] uppercase tracking-[0.3em] text-stone-400 mt-2">
-                  Rashad Hakeem
-                </p>
-              </motion.div>
+              <div className="opacity-30">
+                {/* <p className="font-serif text-2xl text-[#c5a059] text-center">
+                  R & H
+                </p> */}
+              </div>
             </motion.div>
-          </div>
-          {/* SECTION 5: GIFT */}
+          </section>
         </div>
       )}
 
       {/* Floating Buttons */}
       {isOpen && (
         <div className="fixed bottom-20 right-4 z-[400] flex flex-col gap-3">
-          {/* Tombol WhatsApp dengan Icon SVG */}
           <a
             href={`https://wa.me/${data.wa}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-11 h-11 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg transition-transform active:scale-90"
+            className="w-10 h-10 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform"
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="white"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
               <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.631 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
             </svg>
           </a>
-
-          {/* Tombol Musik */}
           <button
             onClick={() => {
               setIsPlaying(!isPlaying);
               isPlaying ? audioRef.current.pause() : audioRef.current.play();
             }}
-            className="w-11 h-11 bg-white text-[#c5a059] rounded-full flex items-center justify-center shadow-lg border border-stone-200 transition-transform active:scale-90"
+            className="w-10 h-10 bg-white text-[#c5a059] rounded-full flex items-center justify-center shadow-lg border border-stone-200"
           >
             {isPlaying ? "🔊" : "🔇"}
           </button>
