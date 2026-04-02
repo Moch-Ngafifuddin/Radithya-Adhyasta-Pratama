@@ -503,18 +503,18 @@ function InvitationContent() {
             >
               <motion.p
                 variants={itemVariants}
-                className="font-serif italic text-stone-600 mb-3 text-xs uppercase text-center"
-              >
-                Wassalamu'alaikum Wr. Wb.
-              </motion.p>
-              <motion.p
-                variants={itemVariants}
                 className="text-[11px] text-stone-500 mb-6 px-4 leading-relaxed text-center"
               >
                 Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila
                 Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu
                 kepada putra kami. Atas kehadiran dan doa restunya, kami ucapkan
                 terima kasih.
+              </motion.p>
+              <motion.p
+                variants={itemVariants}
+                className="font-serif italic text-stone-600 mb-3 text-xs uppercase text-center"
+              >
+                Wassalamu'alaikum Wr. Wb.
               </motion.p>
               <motion.h4
                 variants={itemVariants}
