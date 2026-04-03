@@ -111,7 +111,7 @@ function InvitationContent() {
 
   const data = {
     childName: "Radithya Adhyasta Pratama",
-    parents: "Putra Bapak Rokhmat Priyoko & Ibu Nanik Sugiarti",
+    parents: "Putra Bapak Rokhmat Priyoko & Ibu Nanik Sugianti",
     targetDate: "2026-04-20T10:00:00",
     location: "Desa Tambaksari Kidul, RT 03 RW 03, Kec.Kembaran, Kab.Banyumas",
     rekening: "0625817659",
@@ -435,60 +435,6 @@ function InvitationContent() {
               >
                 — Aamiin Ya Rabbal Alamin —
               </motion.p>
-            </motion.div>
-          </section>
-
-          {/* SECTION 5: GIFT */}
-          <section className="snap-section flex flex-col items-center justify-center px-8 text-center">
-            <FullDecorations />
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              className="z-30 relative"
-            >
-              <motion.h4
-                variants={itemVariants}
-                className="font-serif text-[#c5a059] text-xl font-bold mb-4 uppercase tracking-widest"
-              >
-                Tanda Kasih
-              </motion.h4>
-
-              <motion.p
-                variants={itemVariants}
-                className="font-serif italic text-stone-500 text-[13px] mb-8 leading-relaxed px-6"
-              >
-                Tanpa mengurangi rasa hormat, bagi Bapak/Ibu/Saudara/i yang
-                ingin memberikan tanda kasih untuk ananda, dapat melalui:
-              </motion.p>
-
-              <motion.div
-                variants={itemVariants}
-                className="bg-white/80 backdrop-blur-md p-6 rounded-[2.5rem] shadow-sm border border-[#c5a059]/20 flex flex-col items-center max-w-[280px] mx-auto relative"
-              >
-                {/* Aksen Ikon Bank */}
-                <div className="text-xl mb-2">💳</div>
-
-                <p className="text-[#1a365d] font-bold text-xl mb-4 tracking-wider">
-                  {data.rekening}
-                </p>
-
-                <button
-                  onClick={() => handleCopy(data.rekening)}
-                  className="bg-[#c5a059] text-white px-8 py-2.5 rounded-full text-[10px] font-bold uppercase shadow-lg active:scale-95 transition-transform tracking-widest"
-                >
-                  Salin Nomor Rekening
-                </button>
-
-                <div className="mt-4 border-t border-stone-100 w-full pt-3">
-                  <p className="text-[11px] text-[#1a365d] uppercase font-bold tracking-widest">
-                    Bank BNI
-                  </p>
-                  <p className="text-[10px] text-stone-400 font-medium">
-                    a.n Nanik Sugiarti
-                  </p>
-                </div>
-              </motion.div>
             </motion.div>
           </section>
 
