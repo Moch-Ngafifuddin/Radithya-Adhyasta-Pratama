@@ -100,6 +100,44 @@ const CountdownTimer = ({ targetDate }) => {
   );
 };
 
+const Slideshow = ({ images }) => {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 5000); // Ganti gambar setiap 3 detik
+    return () => clearInterval(timer);
+  }, [images.length]);
+
+  return (
+    <div className="relative w-full h-full">
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={index}
+          src={images[index]}
+          initial={{ opacity: 0, scale: 1.1 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 1, ease: "easeInOut" }}
+          className="absolute inset-0 w-full h-full object-cover"
+          alt={`Slide ${index}`}
+        />
+      </AnimatePresence>
+
+      {/* Indikator Titik (Dots) */}
+      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5 z-40">
+        {images.map((_, i) => (
+          <div
+            key={i}
+            className={`h-1 transition-all duration-500 rounded-full ${i === index ? "w-4 bg-white" : "w-1 bg-white/40"}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
 function InvitationContent() {
   const searchParams = useSearchParams();
   const rawName = searchParams.get("to") || "Nama Tamu";
@@ -359,39 +397,42 @@ function InvitationContent() {
             </motion.div>
           </section>
 
-          {/* SECTION 4: GALLERY */}
-          <section className="snap-section flex flex-col items-center justify-center px-8 text-center">
+          {/* SECTION 4: GALLERY (Auto Slideshow Version) */}
+          <section className="snap-section flex flex-col items-center justify-center px-8 text-center relative overflow-hidden">
             <FullDecorations />
+
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              className="z-30 relative w-full"
+              className="z-30 relative w-full flex flex-col items-center"
             >
               <motion.h3
                 variants={itemVariants}
-                className="font-serif text-[#c5a059] text-xl font-bold mb-6 uppercase tracking-widest text-center"
+                className="font-serif text-[#c5a059] text-xl font-bold mb-8 uppercase tracking-widest"
               >
                 Galeri Foto
               </motion.h3>
-              <div className="grid grid-cols-2 gap-2 w-full max-w-[280px] mx-auto mb-4">
-                {[1, 2, 3, 4].map((i) => (
-                  <motion.div
-                    key={i}
-                    variants={itemVariants}
-                    className="aspect-square rounded-xl overflow-hidden border-2 border-white shadow-md bg-stone-200"
-                  >
-                    <img
-                      src={`/foto${i}.png`}
-                      className="w-full h-full object-cover"
-                      alt="Galeri"
-                    />
-                  </motion.div>
-                ))}
-              </div>
+
+              {/* Slideshow Container */}
+              <motion.div
+                variants={itemVariants}
+                className="relative w-full max-w-[280px] aspect-[4/5] rounded-[2rem] overflow-hidden border-4 border-white shadow-2xl bg-stone-100"
+              >
+                <Slideshow
+                  images={[
+                    "/foto1.png",
+                    "/foto2.png",
+                    "/foto3.png",
+                    "/foto4.png",
+                    "/foto5.jpeg",
+                  ]}
+                />
+              </motion.div>
+
               <motion.p
                 variants={itemVariants}
-                className="text-[10px] text-stone-400 italic text-center"
+                className="text-[10px] text-stone-400 italic mt-6 tracking-wide"
               >
                 "Momen bahagia ananda tersayang"
               </motion.p>
